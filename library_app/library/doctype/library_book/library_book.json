@@ -1,0 +1,76 @@
+{
+  "doctype": "DocType",
+  "name": "Library Book",
+  "module": "Library App",
+  "custom": true,
+  "engine": "InnoDB",
+  "fields": [
+    {
+      "fieldname": "isbn",
+      "label": "ISBN",
+      "fieldtype": "Data",
+      "reqd": 1,
+      "unique": 1
+    },
+    {
+      "fieldname": "title",
+      "label": "Title",
+      "fieldtype": "Data",
+      "reqd": 1
+    },
+    {
+      "fieldname": "author",
+      "label": "Author",
+      "fieldtype": "Data",
+      "reqd": 1
+    },
+    {
+      "fieldname": "edition",
+      "label": "Edition",
+      "fieldtype": "Data"
+    },
+    {
+      "fieldname": "publication",
+      "label": "Publication",
+      "fieldtype": "Data"
+    },
+    {
+      "fieldname": "description",
+      "label": "Description",
+      "fieldtype": "Text"
+    },
+    {
+      "fieldname": "quantity",
+      "label": "Quantity",
+      "fieldtype": "Int",
+      "reqd": 1,
+      "default": 1
+    },
+    {
+      "fieldname": "location",
+      "label": "Location",
+      "fieldtype": "Data"
+    }
+  ],
+  "permissions": [
+    {
+      "role": "Librarian",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1,
+      "submit": 0,
+      "cancel": 0,
+      "amend": 0
+    },
+    {
+      "role": "Student",
+      "read": 1
+    },
+    {
+      "role": "Instructor",
+      "read": 1
+    }
+  ],
+  "autoname": "field:isbn"
+}

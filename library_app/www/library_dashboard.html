@@ -1,0 +1,66 @@
+{% extends "templates/web.html" %}
+{% block page_content %}
+<header class="mb-4">
+  <nav>
+    <a href="/library" class="btn btn-primary">My Books</a>
+    <a href="/faculty-library" class="btn btn-secondary">Faculty Books</a>
+    <a href="/library-dashboard" class="btn btn-info">Dashboard</a>
+    <a href="/librarian-book-search" class="btn btn-warning">Book Search</a>
+  </nav>
+</header>
+
+<h1>Library Dashboard</h1>
+
+<div class="row">
+  <div class="col-md-3">
+    <div class="card p-3 bg-light mb-3 text-center">
+      <h3>Total Books</h3>
+      <p>{{ frappe.db.count('Library Book') }}</p>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card p-3 bg-light mb-3 text-center">
+      <h3>Books Issued</h3>
+      <p>{{ frappe.db.count('Library Transaction', {'status': 'Issued'}) }}</p>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card p-3 bg-light mb-3 text-center">
+      <h3>Books Overdue</h3>
+      <p>{{ frappe.db.count('Library Transaction', {'status': 'Issued', 'due_date': ['<', frappe.utils.nowdate()]}) }}</p>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card p-3 bg-light mb-3 text-center">
+      <h3>Registered Members</h3>
+      <p>
+        {{ frappe.db.count('Student') + frappe.db.count('Instructor') + frappe.db.count('Employee') }}
+      </p>
+    </div>
+  </div>
+</div>
+
+<h2>Recent Issued Books</h2>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Book</th>
+      <th>Member</th>
+      <th>Issue Date</th>
+      <th>Due Date</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for tx in frappe.get_all('Library Transaction', filters={}, fields=['book', 'member', 'issue_date', 'due_date', 'status'], order_by='issue_date desc', limit=10) %}
+    <tr>
+      <td>{{ frappe.db.get_value('Library Book', tx.book, 'title') }}</td>
+      <td>{{ tx.member }}</td>
+      <td>{{ tx.issue_date }}</td>
+      <td>{{ tx.due_date }}</td>
+      <td>{{ tx.status }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "templates/web.html" %}
+{% block page_content %}
+<header class="mb-4">
+  <nav>
+    <a href="/library" class="btn btn-primary">My Books</a>
+    <a href="/faculty-library" class="btn btn-secondary">Faculty Books</a>
+    <a href="/library-dashboard" class="btn btn-info">Dashboard</a>
+    <a href="/librarian-book-search" class="btn btn-warning">Book Search</a>
+  </nav>
+</header>
+
+<h1>My Library Books (Student)</h1>
+
+<p>List of books issued to you with due dates and return status.</p>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Book Title</th>
+      <th>Issue Date</th>
+      <th>Due Date</th>
+      <th>Return Date</th>
+      <th>Status</th>
+      <th>Penalty (INR)</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for tx in frappe.get_all('Library Transaction', filters={'member': frappe.session.user, 'status': 'Issued'}, fields=['book', 'issue_date', 'due_date', 'return_date', 'status', 'penalty']) %}
+    <tr>
+      <td>{{ frappe.db.get_value('Library Book', tx.book, 'title') }}</td>
+      <td>{{ tx.issue_date }}</td>
+      <td>{{ tx.due_date }}</td>
+      <td>{{ tx.return_date or '-' }}</td>
+      <td>{{ tx.status }}</td>
+      <td>{{ tx.penalty }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

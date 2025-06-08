@@ -1,0 +1,52 @@
+{% extends "templates/web.html" %}
+{% block page_content %}
+<header class="mb-4">
+  <nav>
+    <a href="/library" class="btn btn-primary">My Books</a>
+    <a href="/faculty-library" class="btn btn-secondary">Faculty Books</a>
+    <a href="/library-dashboard" class="btn btn-info">Dashboard</a>
+    <a href="/librarian-book-search" class="btn btn-warning">Book Search</a>
+  </nav>
+</header>
+
+<h1>Search Books</h1>
+<input type="text" id="bookSearch" placeholder="Search by title, author, ISBN" class="form-control mb-3" onkeyup="filterBooks()">
+
+<table class="table table-bordered" id="bookTable">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Author</th>
+      <th>ISBN</th>
+      <th>Edition</th>
+      <th>Publication</th>
+      <th>Location</th>
+      <th>Quantity</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for book in frappe.get_all('Library Book', fields=['title', 'author', 'isbn', 'edition', 'publication', 'location', 'quantity']) %}
+    <tr>
+      <td>{{ book.title }}</td>
+      <td>{{ book.author }}</td>
+      <td>{{ book.isbn }}</td>
+      <td>{{ book.edition }}</td>
+      <td>{{ book.publication }}</td>
+      <td>{{ book.location }}</td>
+      <td>{{ book.quantity }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<script>
+function filterBooks() {
+  const input = document.getElementById("bookSearch").value.toLowerCase();
+  const rows = document.querySelectorAll("#bookTable tbody tr");
+  rows.forEach(row => {
+    const text = row.textContent.toLowerCase();
+    row.style.display = text.includes(input) ? "" : "none";
+  });
+}
+</script>
+{% endblock %}
