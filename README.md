@@ -24,11 +24,11 @@ This app helps institutions manage books, issue/return transactions, and syncs w
    cd frappe-bench/apps
    git clone <repository_url> library_app
 2. Install the app on your ERPNext site:
-bench --site your-site-name install-app library_app
+    bench --site your-site-name install-app library_app
 
 3. Migrate and restart:
-bench --site your-site-name migrate
-bench restart
+   bench --site your-site-name migrate
+   bench restart
 
 4. Set up roles and permissions as needed (create Librarian role, assign permissions).
 
